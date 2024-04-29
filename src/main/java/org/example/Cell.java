@@ -111,6 +111,7 @@ public class Cell extends JPanel implements MouseListener {
         // Выводим номера строки и столбца ячейки в консоль
         System.out.println("Нажата ячейка: " + row + ", " + col);
     }
+    //1
 
 
     public void setShip(Ship ship) {

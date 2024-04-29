@@ -15,6 +15,7 @@ public class Ship {
 
         shipCells.add(cell);
     }
+    //1
 
     public boolean isSunk() {
         for (Cell cell : shipCells) {
