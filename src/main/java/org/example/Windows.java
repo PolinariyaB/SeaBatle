@@ -6,8 +6,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 
 public class Windows {
     String name = "";
@@ -90,13 +88,8 @@ public class Windows {
 
         JPanel gridPanel = new JPanel(new GridLayout(10, 10));
 
-        for (int row = 0; row < 10; row++) {
-            for (int col = 0; col < 10; col++) {
-                Cell cell = new Cell(row, col);
-                cell.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK)); // Добавляем черные границы к ячейке
-                gridPanel.add(cell);
-            }
-        }
+        Field field = new Field();
+        field.SetStartField(gridPanel);
 
         frame.add(gridPanel);
 
@@ -106,8 +99,7 @@ public class Windows {
     }
 
     private static void firstHint() {
-        JFrame frame = makeWindow("подсказка", "src/main/resources/firstHint.jpeg");
-        frame.setVisible(true);
+        JOptionPane.showMessageDialog(null, "Выберите 4 однопалубных корабля");
     }
 
 

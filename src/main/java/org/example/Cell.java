@@ -3,119 +3,85 @@ package org.example;
 import javax.swing.*;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-public class Cell extends JPanel implements MouseListener {
-    private boolean isShip;
-    private boolean partOfShip;
-    private Color color;
-    private int row;
-    private int col;
-    private boolean hasShip;
-    private boolean isShot;
+public class Cell implements MouseListener {
+
     private boolean click;
-    private Ship ship;
+    private boolean active;
+    private boolean aaa;
+    public JPanel panel;
 
-    public Cell(int row, int col) {
-        this.row = row;
-        this.col = col;
-        this.isShip = false;
-        this.partOfShip=false;
-        this.isShot = false;
+    public Cell[] arr = new Cell[8];
+    static private int count;
+    public int row;
+    public int col;
+
+    public Cell(int row1, int col1) {
+        panel = new JPanel();
+        this.row = row1;
+        this.col = col1;
         this.click = false;
-        this.color = Color.WHITE;
-        setPreferredSize(new Dimension(30, 30));
-        addMouseListener(this);
+        this.active = false;
+        this.aaa = false;
+        panel.setPreferredSize(new Dimension(30, 30));
+        panel.addMouseListener(this);
     }
 
 
-    public boolean isShip() {
-        return isShip;
-    }
-    public boolean partOfShip() {
-        return partOfShip;
-    }
-
-    public boolean isShot() {
-        return isShot;
-    }
-    public Color getColor() {
-        return color;
-    }
-
-    public void setColor(Color color) {
-        this.color = color;
-    }
-
-    public void markAsHit() {//попал
-        isShot = true;
-        repaint();
-    }
-    public void madeAClick() {
-        click = true;
-        repaint();
-    }
-    public void paintCell(Color color) {
-        setBackground(color);
-        repaint();
-    }
-
-
-    public void markAsMiss() {//промазал
-        isShot = true;
-        repaint();
-    }
-
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        if (click) {
-            g.setColor(Color.GRAY);
-            g.fillRect(0, 0, getWidth(), getHeight()); // Заливаем цветом весь прямоугольник ячейки
-
-        }
-    }
-
-    public int getRow() {
-        return row;
-    }
-
-    public int getCol() {
-        return col;
+    public void paintCell(Color color, JPanel panel1) {
+        panel1.setBackground(color);
+        panel1.repaint();
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        if (!isShip & !partOfShip) {
-            Ship newShip = new Ship();
-            this.setShip(newShip);
-            madeAClick();
-
-            // Окрашиваем текущую кнопку в серый цвет
-            paintCell(Color.GRAY);
-
-            // Окрашиваем соседние кнопки в красный цвет
-            // Предположим, что у вас есть доступ к массиву клеток cells,
-            // и вы хотите окрасить клетку с координатами (row+1, col) в красный цвет
-
-            Cell[][] cell1 = new Cell[3][3];
-
-
-            cell1[row+1][col] = new Cell(row+1,col);  // Создаем объект Cell и устанавливаем цвет в красный для клетки с координатами row+1, col
-            cell1[row+1][col].setColor(Color.RED);   // Устанавливаем цвет объекта Cell в красный
-            System.out.println(row+1);
-            System.out.println(col);
+        if (!click && count < 4) {
+            click = true;
+            paintCell(Color.GRAY, panel);
+            paintRed();
+            count++;
         }
-        // Выводим номера строки и столбца ячейки в консоль
-        System.out.println("Нажата ячейка: " + row + ", " + col);
+        if (count >= 4 && !click && !active){
+            if (count % 2 == 0){
+                click = true;
+                paintCell(Color.GRAY, panel);
+                makeInactive();
+                count++;
+            }
+        }
+        if (count >= 4 && !click && active){
+            paintCell(Color.GRAY, panel);
+        }
+        if (count >= 4 && !click && aaa && active){
+            paintCell(Color.GRAY, panel);
+            click = true;
+            count++;
+        }
+        if (count == 4){
+            JOptionPane.showMessageDialog(null, "Выберите 3 двухпалубных корабля");
+            aaa = true;
+        }
     }
-    //1
 
-
-    public void setShip(Ship ship) {
-        this.ship = ship;
+    public void paintRed(){
+        for (Cell pan: arr){
+            if (pan != null) {
+                paintCell(Color.RED, pan.panel);
+                pan.click = true;
+            }
+        }
+    }
+    public void makeInactive(){
+        if (arr[1] != null)
+            arr[1].active = true;
+        if (arr[3] != null)
+            arr[3].active = true;
+        if (arr[4] != null)
+            arr[4].active = true;
+        if (arr[6] != null)
+            arr[6].active = true;
     }
 
     @Override
