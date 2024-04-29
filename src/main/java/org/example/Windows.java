@@ -28,7 +28,7 @@ public class Windows {
 
     private JButton createPictureButton(String path) {
         ImageIcon icon = new ImageIcon(path);
-        Image image = icon.getImage(); // transform it
+        Image image = icon.getImage();
         Image newImage = image.getScaledInstance(350, 120, Image.SCALE_DEFAULT);
         icon = new ImageIcon(newImage);
         JButton button = new JButton(icon);
@@ -90,7 +90,6 @@ public class Windows {
 
         JPanel gridPanel = new JPanel(new GridLayout(10, 10));
 
-
         for (int row = 0; row < 10; row++) {
             for (int col = 0; col < 10; col++) {
                 Cell cell = new Cell(row, col);
@@ -100,8 +99,17 @@ public class Windows {
         }
 
         frame.add(gridPanel);
+
+        frame.setVisible(true);
+
+        firstHint();
+    }
+
+    private static void firstHint() {
+        JFrame frame = makeWindow("подсказка", "src/main/resources/firstHint.jpeg");
         frame.setVisible(true);
     }
+
 
 
     private static JFrame makeWindow(String text, String path) {
