@@ -5,6 +5,9 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class Cell implements MouseListener {
 
@@ -40,10 +43,10 @@ public class Cell implements MouseListener {
         if (!click && count < 4) {
             click = true;
             paintCell(Color.GRAY, panel);
-            paintRed();
+            paintRedOne();
             count++;
         }
-        if (count >= 4 && !click && !active){
+        else if(!click && !active){
             if (count % 2 == 0){
                 click = true;
                 paintCell(Color.GRAY, panel);
@@ -51,21 +54,37 @@ public class Cell implements MouseListener {
                 count++;
             }
         }
-        if (count >= 4 && !click && active){
-            paintCell(Color.GRAY, panel);
-        }
-        if (count >= 4 && !click && aaa && active){
+        else if(!click){
             paintCell(Color.GRAY, panel);
             click = true;
             count++;
+            paintRedTwo();
         }
         if (count == 4){
             JOptionPane.showMessageDialog(null, "Выберите 3 двухпалубных корабля");
-            aaa = true;
         }
     }
 
-    public void paintRed(){
+    public void paintRedTwo(){
+        Cell temp = null;
+        for (Cell pan: arr){
+            if (pan != null && pan.click) {
+                temp = pan;
+            }
+        }
+        List<Cell> list2 = new ArrayList<>();
+        if (temp != null) {
+            list2.addAll(Arrays.asList(temp.arr));
+        }
+        List<Cell> list1 = new ArrayList<>(Arrays.asList(arr));
+        list1.addAll(list2);
+        for (Cell c:list1){
+            if (c!=null && !c.click)
+                c.paintCell(Color.RED, c.panel);
+        }
+    }
+
+    public void paintRedOne(){
         for (Cell pan: arr){
             if (pan != null) {
                 paintCell(Color.RED, pan.panel);
