@@ -13,7 +13,6 @@ public class Cell implements MouseListener {
 
     private boolean click;
     private boolean active;
-    private boolean aaa;
     public JPanel panel;
 
     public Cell[] arr = new Cell[8];
@@ -27,7 +26,6 @@ public class Cell implements MouseListener {
         this.col = col1;
         this.click = false;
         this.active = false;
-        this.aaa = false;
         panel.setPreferredSize(new Dimension(30, 30));
         panel.addMouseListener(this);
     }
@@ -79,8 +77,10 @@ public class Cell implements MouseListener {
         List<Cell> list1 = new ArrayList<>(Arrays.asList(arr));
         list1.addAll(list2);
         for (Cell c:list1){
-            if (c!=null && !c.click)
+            if (c!=null && !c.click) {
+                c.click = true;
                 c.paintCell(Color.RED, c.panel);
+            }
         }
     }
 
