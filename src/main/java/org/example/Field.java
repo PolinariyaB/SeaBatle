@@ -35,7 +35,6 @@ public class Field {
                         a[row][col].arr[2] = a[row + 1][col + 1];
                 }
                 if (col != 0){
-
                     a[row][col].arr[6] = a[row][col - 1];
                 }
                 if (col != 9) {

@@ -7,7 +7,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class Windows {
+public class Windows { //сериализация
     String name = "";
 
     private void displayStartScreen() {
