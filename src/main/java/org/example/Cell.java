@@ -12,9 +12,10 @@ import java.util.List;
 
 public class Cell implements MouseListener {
 
-    private boolean click;
-    private boolean active;
-    private boolean red;
+    public boolean click;
+    public boolean active;
+    public boolean red;
+    static public boolean finishPlace;
     public JPanel panel;
 
     public Cell[] arr = new Cell[8];
@@ -22,18 +23,24 @@ public class Cell implements MouseListener {
     public int row;
     public int col;
     public Cell adj;
+    public JFrame frame;
+
+    public Cell[][] fieldGame;
 
 
-    public Cell(int row1, int col1) {
+    public Cell(int row1, int col1, JFrame frames, Cell[][] field) {
         panel = new JPanel();
         this.row = row1;
         this.col = col1;
         this.click = false;
         this.active = false;
         this.red = false;
+        finishPlace = false;
         panel.setPreferredSize(new Dimension(30, 30));
         panel.addMouseListener(this);
         this.adj = null;
+        this.frame = frames;
+        this.fieldGame = field;
     }
 
 
@@ -44,30 +51,37 @@ public class Cell implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
+        if (!finishPlace) {
+            placeShips();
+        }else{
+            if (!click)
+                paintGray();
+        }
+    }
+
+    public void placeShips(){
         if (!click && count < 4) { //единичные корабли
             paintGray();
             paintRedOne();
-        }
-        else if(!click && !active){//первый щаг у составного корабля
-            if (((count % 2 == 0 && count < 10) || (count % 3 == 1 && count >= 10 && count < 16) || (count % 4 == 0 && count >= 16 && count < 20))){//первый шаг двойного
+        } else if (!click && !active) {//первый щаг у составного корабля
+            if (((count % 2 == 0 && count < 10) || (count % 3 == 1 && count >= 10 && count < 16) || (count % 4 == 0 && count >= 16 && count < 20))) {//первый шаг двойного
                 paintGray();
                 makeInactive();
             }
-        }
-        else if(!click){//последующие шаги
+        } else if (!click)
             nextSteps();
-        }
         if (count == 4)
             JOptionPane.showMessageDialog(null, "Выберите 3 двухпалубных корабля");
         if (count == 10)
             JOptionPane.showMessageDialog(null, "Выберите 2 трехпалубных корабля");
         if (count == 16)
             JOptionPane.showMessageDialog(null, "Выберите 1 четырехпалубных корабля");
-        if (count == 20)
-            JOptionPane.showMessageDialog(null, "Вы все выбрали!");
-
+        if (count == 20) {
+            Game window = new Game();
+            window.displayStartScreen(frame, fieldGame);
+            finishPlace = true;
+        }
     }
-
     public void nextSteps(){
         if (count <= 10) {//2 шаг двойного
             paintGray();

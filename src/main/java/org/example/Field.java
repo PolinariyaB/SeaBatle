@@ -5,15 +5,22 @@ import java.awt.*;
 
 public class Field {
     public Cell[][] a = new Cell[10][10];
+    JFrame frames;
+    public Field(JFrame frame){
+        this.frames = frame;
+    }
+    public Field(JFrame frame, Cell[][] arr){
+        this.frames = frame;
+        this.a = arr;
+    }
     public void SetStartField(JPanel gridPanel){
         for (int row = 0; row < 10; row++) {
             a[row] = new Cell[10];
             for (int col = 0; col < 10; col++) {
-                Cell cell = new Cell(row, col);
+                Cell cell = new Cell(row, col, frames, this.a);
                 cell.panel.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK));
                 gridPanel.add(cell.panel);
                 a[row][col] = cell;
-
             }
         }
         for (int row = 0; row < 10; row++) {
@@ -39,6 +46,26 @@ public class Field {
                 }
                 if (col != 9) {
                     a[row][col].arr[1] = a[row][col + 1];
+                }
+            }
+        }
+    }
+
+    public void placeOldField(JPanel gridPanel){
+        for (Cell[] cells: a){
+            for (Cell cell:cells){
+                cell.panel.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK));
+                gridPanel.add(cell.panel);
+                cell.click = true;
+            }
+        }
+    }
+    public void makeFieldNotRed(){
+        for (Cell[] cells: a){
+            for (Cell cell:cells){
+                if (cell.red){
+                    cell.red = false;
+                    cell.paintCell(Color.WHITE, cell.panel);
                 }
             }
         }
