@@ -14,6 +14,7 @@ public class Field {
         this.a = arr;
     }
     public void SetStartField(JPanel gridPanel){
+        //размещение пустого поля(бумажки)
         for (int row = 0; row < 10; row++) {
             a[row] = new Cell[10];
             for (int col = 0; col < 10; col++) {
@@ -23,6 +24,11 @@ public class Field {
                 a[row][col] = cell;
             }
         }
+        countArr();
+    }
+
+    public void countArr(){
+        //подсчет говна
         for (int row = 0; row < 10; row++) {
             for (int col = 0; col < 10; col++) {
                 if (row != 0) {
@@ -50,17 +56,20 @@ public class Field {
             }
         }
     }
-
     public void placeOldField(JPanel gridPanel){
+        //размещение поля, которое уже было раскрашено
+        //в нашем случае это поле пользователя, чтобы он его видел
         for (Cell[] cells: a){
             for (Cell cell:cells){
                 cell.panel.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK));
                 gridPanel.add(cell.panel);
                 cell.click = true;
+                cell.active = false;
             }
         }
     }
     public void makeFieldNotRed(){
+        //убираем красные границы
         for (Cell[] cells: a){
             for (Cell cell:cells){
                 if (cell.red){

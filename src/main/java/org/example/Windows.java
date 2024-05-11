@@ -13,6 +13,7 @@ public class Windows { //сериализация
     }
 
     private GridBagConstraints gbcReturn(int top, int left, int bottom, int right) {
+        //координаты для кнопок
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -74,6 +75,7 @@ public class Windows { //сериализация
     }
 
     private static void playerField(JFrame oldFrame) {
+        //начало игры
         JFrame frame = makeWindow("бумажка", "src/main/resources/paper.jpeg");
         oldFrame.dispose();
 

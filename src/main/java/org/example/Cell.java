@@ -8,24 +8,27 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 
 public class Cell implements MouseListener {
 
-    public boolean click;
-    public boolean active;
-    public boolean red;
-    static public boolean finishPlace;
+    public boolean click; //штука для того, чтобы чел не смог сам нажать на свое поле +
+    //чтобы на чужом не жали дважды
+    public boolean active; //нужна для робота, чтобы он жал на клетки пользователя, которые
+    //еще не нажаты
+    public boolean red;//красная или нет
+    public boolean isShip;//корабль или часть корабля
+    static public boolean finishPlace;//закончили расстановку кораблей или нет
     public JPanel panel;
-
-    public Cell[] arr = new Cell[8];
+    public Cell[] arr = new Cell[8]; //смежные клетки
     static private int count;
     public int row;
     public int col;
     public Cell adj;
     public JFrame frame;
-
-    public Cell[][] fieldGame;
+    public Cell[][] fieldGame; //поле робота
+    public Cell[][] fieldUser; //поле пользователя
 
 
     public Cell(int row1, int col1, JFrame frames, Cell[][] field) {
@@ -41,10 +44,13 @@ public class Cell implements MouseListener {
         this.adj = null;
         this.frame = frames;
         this.fieldGame = field;
+        this.isShip = false;
+        this.fieldUser = null;
     }
 
 
     public void paintCell(Color color, JPanel panel1) {
+        //раскраска в любой цвет
         panel1.setBackground(color);
         panel1.repaint();
     }
@@ -52,14 +58,46 @@ public class Cell implements MouseListener {
     @Override
     public void mouseClicked(MouseEvent e) {
         if (!finishPlace) {
+            //если расставляем корабли
             placeShips();
-        }else{
-            if (!click)
-                paintGray();
+        }else {
+            if (!click) {
+                if (isShip) {
+                    paintCell(Color.RED, panel);
+                    red = true;
+                } else {
+                    paintCell(Color.BLACK, panel);
+                }
+                click = true;
+
+                robotMotion();
+                //JOptionPane.showMessageDialog(null, "Ваш ход");
+            }
         }
     }
 
+    public void robotMotion(){
+        //удар робота
+        Random random = new Random();
+        int randomRow = random.nextInt(10);
+        int randomCol = random.nextInt(10);
+        Cell tempCell = fieldUser[randomRow][randomCol];
+        while(tempCell.active){
+            randomRow = random.nextInt(10);
+            randomCol = random.nextInt(10);
+            tempCell = fieldUser[randomRow][randomCol];
+        }
+        if (tempCell.isShip){
+            paintCell(Color.RED, tempCell.panel);
+            red = true;
+        }else{
+            paintCell(Color.BLACK, tempCell.panel);
+        }
+        tempCell.active = true;
+    }
+
     public void placeShips(){
+        //размещение кораблей
         if (!click && count < 4) { //единичные корабли
             paintGray();
             paintRedOne();
@@ -80,6 +118,7 @@ public class Cell implements MouseListener {
             Game window = new Game();
             window.displayStartScreen(frame, fieldGame);
             finishPlace = true;
+            System.out.println(1);
         }
     }
     public void nextSteps(){
@@ -148,6 +187,7 @@ public class Cell implements MouseListener {
     public void paintGray(){
         paintCell(Color.GRAY, panel);
         click = true;
+        isShip = true;
         count++;
     }
 
