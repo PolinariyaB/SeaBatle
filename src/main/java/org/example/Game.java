@@ -7,6 +7,7 @@ public class Game {
     JFrame frame;
     public static Cell[][] temp;
     Cell[][] fieldGame;
+
     public void displayStartScreen(JFrame oldFrame, Cell[][] field) {
         //создает игровое окно
         oldFrame.dispose();
@@ -20,6 +21,8 @@ public class Game {
         this.fieldGame = field;
         setFields();
     }
+
+
     public void setFields(){
         //создает поля(бумажки) пользователя и робота
         JPanel gridPanelUser = new JPanel(new GridLayout(10, 10));
@@ -38,5 +41,6 @@ public class Game {
         frame.add(gridPanelRobot);
         frame.setVisible(true);
         JOptionPane.showMessageDialog(null, "Ваш ход");
+
     }
 }
