@@ -1,10 +1,13 @@
 package org.example;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.awt.Color;
-import java.awt.Dimension;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -51,8 +54,27 @@ public class Cell implements MouseListener {
 
     public void paintCell(Color color, JPanel panel1) {
         //раскраска в любой цвет
+
         panel1.setBackground(color);
         panel1.repaint();
+    }
+
+    public void paintImage(JPanel panel1, String path){
+        BufferedImage myPicture;
+        try {
+            myPicture = ImageIO.read(new File(path));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        JLabel picLabel = new JLabel(new ImageIcon(myPicture.getScaledInstance(30, 30, Image.SCALE_FAST)));
+        panel1.add(picLabel);
+        panel1.validate();
+    }
+    public void startRobotTimer() {
+        Timer timer = new Timer(1000, e -> robotMotion());
+        timer.setRepeats(false);
+        // Запускаем таймер
+        timer.start();
     }
 
     @Override
@@ -61,19 +83,21 @@ public class Cell implements MouseListener {
             //если расставляем корабли
             placeShips();
         }else {
-            if (!click) {
-                if (isShip) {
-                    paintCell(Color.RED, panel);
-                    red = true;
-                } else {
-                    paintCell(Color.BLACK, panel);
-                }
-                click = true;
-
-                robotMotion();
-                //JOptionPane.showMessageDialog(null, "Ваш ход");
-            }
+            playerMotion();
         }
+    }
+    public void playerMotion(){
+        if (!click) {
+            if (isShip) {
+                paintImage(panel, "src/main/resources/wrong.png");
+                red = true;
+            } else {
+                paintImage(panel, "src/main/resources/dot.png");
+                startRobotTimer();
+            }
+            click = true;
+        }
+            //JOptionPane.showMessageDialog(null, "Ваш ход");
     }
 
     public void robotMotion(){
@@ -88,10 +112,11 @@ public class Cell implements MouseListener {
             tempCell = fieldUser[randomRow][randomCol];
         }
         if (tempCell.isShip){
-            paintCell(Color.RED, tempCell.panel);
+            paintImage(tempCell.panel, "src/main/resources/wrong.png");
             red = true;
+            startRobotTimer();
         }else{
-            paintCell(Color.BLACK, tempCell.panel);
+            paintImage(tempCell.panel, "src/main/resources/dot.png");
         }
         tempCell.active = true;
     }
