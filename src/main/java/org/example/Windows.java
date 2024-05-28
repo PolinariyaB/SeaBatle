@@ -82,9 +82,8 @@ public class Windows { //сериализация
         JPanel topPanel = new JPanel(); // Пустая панель для отступа сверху
         frame.add(topPanel);
 
-        JPanel gridPanelUser = new JPanel(new GridLayout(10, 10));
         Field fieldUser = new Field(frame);
-        fieldUser.SetStartField(gridPanelUser);
+        JPanel gridPanelUser = fieldUser.setStartField();
 
         frame.add(gridPanelUser);
         frame.setVisible(true);

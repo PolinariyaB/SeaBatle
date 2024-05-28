@@ -9,7 +9,6 @@ public class Game {
     Cell[][] fieldGame;
 
     public void displayStartScreen(JFrame oldFrame, Cell[][] field) {
-        //создает игровое окно
         oldFrame.dispose();
         frame = new JFrame("Игра");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -24,21 +23,18 @@ public class Game {
 
 
     public void setFields(){
-        //создает поля(бумажки) пользователя и робота
-        JPanel gridPanelUser = new JPanel(new GridLayout(10, 10));
         Field fieldUser = new Field(frame, this.fieldGame);
-        fieldUser.placeOldField(gridPanelUser);
+        JPanel userPanel = fieldUser.placeOldField();
         fieldUser.makeFieldNotRed();
-        temp = fieldUser.a;
-        gridPanelUser.setEnabled(false);
+        temp = fieldUser.fieldGame;
+        userPanel.setEnabled(false);
 
-        JPanel gridPanelRobot = new JPanel(new GridLayout(10, 10));
         Field fieldRobot = new Field(frame);
-        fieldRobot.SetStartField(gridPanelRobot);
+        JPanel robotPanel = fieldRobot.setStartField();
         RobotField robotField = new RobotField(frame);
-        fieldRobot.a = robotField.example(fieldRobot, fieldUser.a);
-        frame.add(gridPanelUser);
-        frame.add(gridPanelRobot);
+        fieldRobot.fieldGame = robotField.example(fieldRobot, fieldUser.fieldGame);
+        frame.add(userPanel);
+        frame.add(robotPanel);
         frame.setVisible(true);
         JOptionPane.showMessageDialog(null, "Ваш ход");
 

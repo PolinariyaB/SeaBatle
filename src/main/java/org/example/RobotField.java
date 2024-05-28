@@ -9,33 +9,27 @@ public class RobotField {
     }
     public Cell[][] example(Field field, Cell[][] userField){
         //шаблон поля робота
-        field.a[0][1].isShip = true;
-        field.a[0][2].isShip = true;
-        field.a[1][4].isShip = true;
-        field.a[1][5].isShip = true;
-        field.a[1][6].isShip = true;
-        field.a[1][9].isShip = true;
-        field.a[3][2].isShip = true;
-        field.a[3][4].isShip = true;
-        field.a[3][9].isShip = true;
-        field.a[4][2].isShip = true;
-        field.a[4][7].isShip = true;
-        field.a[4][9].isShip = true;
-        field.a[5][7].isShip = true;
-        field.a[5][9].isShip = true;
-        field.a[6][9].isShip = true;
-        field.a[7][3].isShip = true;
-        field.a[7][4].isShip = true;
-        field.a[7][5].isShip = true;
-        field.a[8][0].isShip = true;
-        field.a[8][8].isShip = true;
+        field.fieldGame[0][1].setShip(true);
+        field.fieldGame[0][2].setShip(true);
+        field.fieldGame[1][4].setShip(true);
+        field.fieldGame[1][5].setShip(true);
+        field.fieldGame[1][6].setShip(true);
+        field.fieldGame[1][9].setShip(true);
+        field.fieldGame[3][2].setShip(true);
+        field.fieldGame[3][4].setShip(true);
+        field.fieldGame[3][9].setShip(true);
+        field.fieldGame[4][2].setShip(true);
+        field.fieldGame[4][7].setShip(true);
+        field.fieldGame[4][9].setShip(true);
+        field.fieldGame[5][7].setShip(true);
+        field.fieldGame[5][9].setShip(true);
+        field.fieldGame[6][9].setShip(true);
+        field.fieldGame[7][3].setShip(true);
+        field.fieldGame[7][4].setShip(true);
+        field.fieldGame[7][5].setShip(true);
+        field.fieldGame[8][0].setShip(true);
+        field.fieldGame[8][8].setShip(true);
         field.countArr();
-        for (Cell[] cells: field.a){
-            for (Cell cell:cells){
-                cell.fieldGame = field.a;
-                cell.fieldUser = userField;
-            }
-        }
-        return field.a;
+        return field.fieldGame;
     }
 }
